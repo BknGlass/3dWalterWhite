@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3d Walter White</title>
+    <style>
+        body{
+            margin:0;
+        }
+        canvas{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        WALTER TIME!
+    </h1>
+    <script src="./js/three.js"></script>
+    <script type="module" src="./js/GLTFLoader.js"></script>
+    <script type="module">
+        import {GLTFLoader} from "./js/GLTFLoader.js";
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio*.5)
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(
+            75, 
+            window.innerWidth/window.innerHeight,
+            0.1,
+            1000 
+        );
+
+        const loader = new GLTFLoader();
+
+        var obj;
+        loader.load("scene.gltf",function(gltf){
+            obj = gltf.scene;
+            scene.add(gltf.scene);
+        });
+
+        scene.background = new THREE.Color(0xffffff);
+        var light = new THREE.HemisphereLight(0xffffff, 0x000000, 3.5);
+        scene.add(light);
+        camera.position.set(0,3,7);
+
+        function animate() {
+	        requestAnimationFrame( animate );
+            obj.rotation.y += 0.01;
+	        renderer.render( scene, camera );
+        }
+         
+        animate();
+
+    </script>
+</body>
+</html>
